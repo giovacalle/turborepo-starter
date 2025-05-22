@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: turborepo_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - turborepo-starter-data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    container_name: web
+    env_file:
+      - ./apps/web/.env
+    ports:
+      - '3000:3000'
+
+  api-todos:
+    build:
+      context: .
+      dockerfile: ./apps/api/services/todos/Dockerfile
+    container_name: api-todos
+    env_file:
+      - ./apps/api/services/todos/.env
+    ports:
+      - '4001:4001'
+    depends_on:
+      - db
+
+volumes:
+  turborepo-starter-data:

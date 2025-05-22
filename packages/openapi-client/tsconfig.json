@@ -1,0 +1,3 @@
+{
+	"extends": "@turborepo-starter/config-ts/base"
+}
